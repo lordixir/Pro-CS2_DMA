@@ -97,9 +97,12 @@ jobs:
 
           # 先检查 main
           echo "Checking main..."
-          MAIN_TS=$(fetch_info_ts_by_ref "main")
-          echo "Main timestamp: ${MAIN_TS}"
-          update_best "main" "main" "$MAIN_TS" "main"
+          if MAIN_TS=$(fetch_info_ts_by_ref "main" 2>/dev/null); then
+            echo "Main timestamp: ${MAIN_TS}"
+            update_best "main" "main" "$MAIN_TS" "main"
+          else
+            echo "Main output/info.json missing or fetch failed."
+          fi
 
           # 再检查 open PR
           echo "Checking open pull requests..."
